@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../services/firebase'
 import { useUserStore } from '../store'
@@ -7,7 +7,8 @@ export const useAuth = () => {
   const userStore = useUserStore()
   const loading = ref(true)
 
-  onMounted(() => {
+  // No usar onMounted aquí, solo proveer las referencias
+  const initAuth = () => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         userStore.setUser(user)
@@ -17,12 +18,13 @@ export const useAuth = () => {
       }
       loading.value = false
     })
-  })
+  }
 
   return {
     loading,
-    user: userStore.user,
-    userData: userStore.userData,
-    isAuthenticated: userStore.isAuthenticated
+    user: computed(() => userStore.user),
+    userData: computed(() => userStore.userData),
+    isAuthenticated: computed(() => userStore.isAuthenticated),
+    initAuth
   }
 }

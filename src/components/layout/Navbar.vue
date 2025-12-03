@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <nav class="navbar">
     <div class="container-fluid">
       <button 
-        class="btn btn-link d-lg-none me-2" 
+        class="btn btn-link d-lg-none me-2 mobile-menu-btn" 
         @click="toggleMobileSidebar"
       >
         <i class="bi bi-list fs-4"></i>
@@ -21,14 +21,14 @@
         </div>
       </div>
 
-      <div class="navbar-actions d-flex align-items-center gap-3">
+      <div class="navbar-actions">
         <div class="dropdown">
           <button 
-            class="btn btn-link position-relative" 
+            class="btn-icon position-relative" 
             id="notificationsDropdown"
             data-bs-toggle="dropdown"
           >
-            <i class="bi bi-bell fs-4"></i>
+            <i class="bi bi-bell fs-5"></i>
             <span class="notification-badge" v-if="notificationCount > 0">
               {{ notificationCount }}
             </span>
@@ -58,11 +58,11 @@
 
         <div class="dropdown">
           <button 
-            class="btn btn-link" 
+            class="btn-icon" 
             id="userDropdown"
             data-bs-toggle="dropdown"
           >
-            <i class="bi bi-person-circle fs-4"></i>
+            <i class="bi bi-person-circle fs-5"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li class="dropdown-header">
@@ -103,24 +103,20 @@ const notifications = ref([
     icon: 'bi bi-calendar-check',
     title: 'Cita próxima en 30 minutos',
     time: 'Hace 5 min'
-  },
-  {
-    id: 2,
-    icon: 'bi bi-person-plus',
-    title: 'Nuevo paciente registrado',
-    time: 'Hace 1 hora'
   }
 ])
 
 const notificationCount = computed(() => notifications.value.length)
 
 const handleSearch = () => {
-  // Implementar búsqueda global
   console.log('Buscando:', searchQuery.value)
 }
 
 const toggleMobileSidebar = () => {
-  // Implementar toggle para móvil
+  const sidebar = document.querySelector('.sidebar')
+  if (sidebar) {
+    sidebar.classList.toggle('mobile-open')
+  }
 }
 
 const handleLogout = async () => {
@@ -136,11 +132,18 @@ const handleLogout = async () => {
 
 <style scoped>
 .navbar {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   padding: 1rem 1.5rem;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1040;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.mobile-menu-btn {
+  color: #4a5568;
+  padding: 0.5rem;
 }
 
 .navbar-search {
@@ -156,24 +159,52 @@ const handleLogout = async () => {
 .search-wrapper i {
   position: absolute;
   left: 1rem;
-  color: #6c757d;
+  color: #a0aec0;
 }
 
 .search-wrapper .form-control {
   padding-left: 2.5rem;
-  border-radius: 20px;
-  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f7fafc;
 }
 
 .search-wrapper .form-control:focus {
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+  background: white;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f7fafc;
+  border: none;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: #edf2f7;
+  color: #667eea;
 }
 
 .notification-badge {
   position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #dc3545;
+  top: -4px;
+  right: -4px;
+  background: #f56565;
   color: white;
   border-radius: 50%;
   width: 18px;
@@ -182,12 +213,16 @@ const handleLogout = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
 }
 
 .notifications-dropdown {
   width: 350px;
   max-height: 400px;
   overflow-y: auto;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 }
 
 .notification-item {
@@ -203,19 +238,17 @@ const handleLogout = async () => {
 .notification-title {
   font-weight: 500;
   font-size: 0.9rem;
+  color: #2d3748;
 }
 
 .notification-time {
   font-size: 0.75rem;
-  color: #6c757d;
+  color: #a0aec0;
 }
 
-.btn-link {
-  color: #6c757d;
-  text-decoration: none;
-}
-
-.btn-link:hover {
-  color: #0d6efd;
+@media (max-width: 768px) {
+  .navbar-search {
+    display: none;
+  }
 }
 </style>

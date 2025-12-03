@@ -6,6 +6,7 @@ import Dashboard from '../views/Dashboard.vue'
 import Appointments from '../views/Appointments.vue'
 import Patients from '../views/Patients.vue'
 import MedicalRecords from '../views/MedicalRecords.vue'
+import Reports from '../views/Reports.vue'
 import Settings from '../views/Settings.vue'
 
 const routes = [
@@ -43,6 +44,12 @@ const routes = [
     path: '/medical-records',
     name: 'MedicalRecords',
     component: MedicalRecords,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/reports',
+    name: 'Reports',
+    component: Reports,
     meta: { requiresAuth: true }
   },
   {
